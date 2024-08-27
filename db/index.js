@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const adminSchema = new mongoose.Schema({
   username: String,
   password: String,
-  purchasedCourses: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Course' }]
+  purchasedCourses: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Product' }]
 }, { collection: 'admins' });
 
 const courseSchema = new mongoose.Schema({
