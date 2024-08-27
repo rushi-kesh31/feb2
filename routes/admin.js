@@ -1,6 +1,5 @@
 const express = require('express');
 const app = express();
-const zod=require("zod");
 const {Admin, Course, Product } = require('../db');
 const jwt = require('jsonwebtoken');
 const { secretKey } = require('../middleware/auth');
@@ -11,20 +10,8 @@ const { authenticateJwt } = require('../middleware/auth');
 const router = express.Router();
 
 // Admin routes
-const signupBody = zod.object({
-  username: zod.string().email(),
-firstName: zod.string(),
-lastName: zod.string(),
-password: zod.string()
-})
 
 router.post("/signup", async (req, res) => {
-  const { success } = signupBody.safeParse(req.body)
-  if (!success) {
-      return res.status(411).json({
-          message: "Email already taken / Incorrect inputs"
-      })
-  }
 
   const existingUser = await Admin.findOne({
       username: req.body.username
@@ -43,13 +30,6 @@ router.post("/signup", async (req, res) => {
       lastName: req.body.lastName,
   })
   const userId = user._id;
-
-  
-
-  const token = jwt.sign({
-      userId
-  }, secretKey);
-
   res.json({
       message: "User created successfully",
       token: token
