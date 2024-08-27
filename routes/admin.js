@@ -20,6 +20,7 @@ router.post("/signup", async (req, res) => {
       message: "Email already taken"
     });
   }
+  else{
 
   const user = await Admin.create({ username, password });
   const token = jwt.sign({ username, password }, secretKey, { expiresIn: '1h' });
@@ -27,7 +28,7 @@ router.post("/signup", async (req, res) => {
   res.json({
     message: "User created successfully",
     token: token
-  });
+  });}
 });
 
 
