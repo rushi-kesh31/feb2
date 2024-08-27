@@ -10,31 +10,25 @@ const { authenticateJwt } = require('../middleware/auth');
 const router = express.Router();
 
 // Admin routes
-
 router.post("/signup", async (req, res) => {
+  const { username, password } = req.body;  
 
-  const existingUser = await Admin.findOne({
-      username: req.body.username
-  })
+  const existingUser = await Admin.findOne({ username });
 
   if (existingUser) {
-      return res.status(411).json({
-          message: "Email already taken"
-      })
+    return res.status(411).json({
+      message: "Email already taken"
+    });
   }
 
-  const user = await Admin.create({
-      username: req.body.username,
-      password: req.body.password
-  })
-  const userId = user._id;
+  const user = await Admin.create({ username, password });
   const token = jwt.sign({ username, password }, secretKey, { expiresIn: '1h' });
 
   res.json({
-      message: "User created successfully",
-      token: token
-  })
-})
+    message: "User created successfully",
+    token: token
+  });
+});
 
 
 
