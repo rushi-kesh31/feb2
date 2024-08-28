@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const zod=require("zod");
-const {Admin, Course, Product } = require('../db');
+const {Admin, Product } = require('../db');
 const jwt = require('jsonwebtoken');
 const { secretKey } = require('../middleware/auth');
 const cors = require('cors');
@@ -74,7 +74,7 @@ router.post('/courses', authenticateJwt, async (req, res) => {
 });
 
 router.post('/courses/:courseId', authenticateJwt, async (req, res) => {
-  const course = await Course.findById(req.params.courseId);
+  const course = await Product.findById(req.params.courseId);
   if (course) {
     const user = await Admin.findOne({ username: req.user.username });
     if (user) {
